@@ -31,7 +31,7 @@ Proyek dibangun dengan Next.js App Router, React, Tailwind CSS, TypeScript, dan 
 
 - `karma_balance` adalah saldo karma yang dapat digunakan untuk menukar item di toko.
 - `feedback_exp` adalah poin EXP yang digunakan untuk mencapai level berikutnya.
-- Setiap ulasan yang berhasil memberikan 250 karma dan feedback EXP sesuai nilai `FEEDBACK_EXP_PER_REVIEW`.
+- Setiap ulasan yang berhasil memberikan 250 karma kepada pemberi ulasan dan feedback EXP sesuai nilai `FEEDBACK_EXP_PER_REVIEW` (default 100) kepada penerima ulasan.
 - Target EXP level dihitung menggunakan rumus:
 
 ```text
@@ -150,7 +150,7 @@ DB_NAME=kolegahub_db
 
 JWT_SECRET=isi-dengan-secret-acak-minimal-32-karakter
 
-FEEDBACK_EXP_PER_REVIEW=10
+FEEDBACK_EXP_PER_REVIEW=100
 REVIEW_COOLDOWN_HOURS=24
 ```
 
