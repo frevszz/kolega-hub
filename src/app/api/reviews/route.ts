@@ -131,7 +131,7 @@ export async function POST(request: Request) {
     }
 
     const points = 250;
-    const feedbackExp = integerSetting("FEEDBACK_EXP_PER_REVIEW", 10);
+    const feedbackExp = integerSetting("FEEDBACK_EXP_PER_REVIEW", 100);
     const [result] = await connection.execute<ResultSetHeader>(
       `INSERT INTO reviews
        (reviewer_id, reviewee_id, technical_score, collaboration_score,
@@ -148,9 +148,15 @@ export async function POST(request: Request) {
     }
     await connection.execute(
       `UPDATE users
-       SET karma_balance = karma_balance + ?, feedback_exp = feedback_exp + ?
+       SET karma_balance = karma_balance + ?
        WHERE id = ?`,
-      [points, feedbackExp, auth.id],
+      [points, auth.id],
+    );
+    await connection.execute(
+      `UPDATE users
+       SET feedback_exp = feedback_exp + ?
+       WHERE id = ?`,
+      [feedbackExp, revieweeId],
     );
     await connection.commit();
     return Response.json({ id: result.insertId, points_awarded: points }, { status: 201 });
