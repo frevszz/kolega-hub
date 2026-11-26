@@ -1,10 +1,12 @@
 export const OPEN_AUTH_DIALOG_EVENT = "kolega:open-auth-dialog";
 export const AUTH_SESSION_CHANGE_EVENT = "kolega:auth-session-change";
+export const KARMA_BALANCE_CHANGE_EVENT = "kolega:karma-balance-change";
 
 declare global {
   interface WindowEventMap {
     "kolega:open-auth-dialog": Event;
     "kolega:auth-session-change": CustomEvent<string | null>;
+    "kolega:karma-balance-change": Event;
   }
 }
 
@@ -14,4 +16,8 @@ export function requestAuthDialog() {
 
 export function notifyAuthSessionChange(token: string | null) {
   window.dispatchEvent(new CustomEvent(AUTH_SESSION_CHANGE_EVENT, { detail: token }));
+}
+
+export function notifyKarmaBalanceChange() {
+  window.dispatchEvent(new Event(KARMA_BALANCE_CHANGE_EVENT));
 }

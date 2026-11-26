@@ -4,6 +4,7 @@ import { useState } from "react";
 import { RiStarFill } from "@remixicon/react";
 import IconKarma from "../../app/icons/karma";
 import ReviewForm from "@/components/ui/reviewForm";
+import { notifyKarmaBalanceChange } from "@/lib/authEvents";
 interface PersonCardProps {
   userId: number;
   name: string;
@@ -116,6 +117,7 @@ export default function PersonCard({
           onSuccess={() => {
             setIsReviewFormOpen(false);
             onReviewSubmitted();
+            notifyKarmaBalanceChange();
           }}
         />
       )}

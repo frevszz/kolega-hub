@@ -19,6 +19,7 @@ import Link from "next/link";
 import AuthForm from "@/components/ui/authForm";
 import {
   AUTH_SESSION_CHANGE_EVENT,
+  KARMA_BALANCE_CHANGE_EVENT,
   notifyAuthSessionChange,
   OPEN_AUTH_DIALOG_EVENT,
 } from "@/lib/authEvents";
@@ -90,6 +91,22 @@ export default function Navbar() {
     window.addEventListener(AUTH_SESSION_CHANGE_EVENT, handleSessionChange);
     return () => window.removeEventListener(AUTH_SESSION_CHANGE_EVENT, handleSessionChange);
   }, []);
+
+  useEffect(() => {
+    const handleKarmaBalanceChange = () => {
+      if (!authToken) return;
+
+      fetch("/api/me", { headers: { Authorization: `Bearer ${authToken}` }, cache: "no-store" })
+        .then(async (response) => {
+          const data = await response.json();
+          if (response.ok) setKarmaPoints(Number(data.user?.karma_balance ?? 0));
+        })
+        .catch(() => setSessionError("Gagal memuat saldo karma."));
+    };
+
+    window.addEventListener(KARMA_BALANCE_CHANGE_EVENT, handleKarmaBalanceChange);
+    return () => window.removeEventListener(KARMA_BALANCE_CHANGE_EVENT, handleKarmaBalanceChange);
+  }, [authToken]);
 
   useEffect(() => {
     const openAuthDialog = () => {
